@@ -2,6 +2,7 @@
 include 'index_show_actions.php';
 include $ROOT.'header.php'; ?>
 
+// Les css vont dans le assets/css/tournoi.css Et ne modifie jamais bootstrap.css
 <h2>Les Joueurs!</h2>
 <div style="float:right;">
 	<table class="table text-right">

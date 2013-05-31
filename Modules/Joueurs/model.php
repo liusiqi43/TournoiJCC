@@ -9,6 +9,7 @@ include $ROOT."connection.php";
 // $ROOT est defini ici. Tous les fichiers dans ce modules ont donc tous acces a cette variable. 
 // $ROOT signifie la distance entre ce dossier et la dossier ou se trouve l'index, header et footer
 
+
 function getJoueurs(){
 	$sql = "SELECT >>>>>";
 	$res = psql().exec($sql);
