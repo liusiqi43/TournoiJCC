@@ -1,0 +1,13 @@
+.footer {
+	padding-top: 3px;
+	padding-bottom: 0px;
+	background: #000000;
+	color:  #ffffff;
+	text-align: center ;
+} 
+
+.button-row {
+	padding-top: 5px;
+	padding-bottom: 20px;
+	float: right;
+}

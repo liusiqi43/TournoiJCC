@@ -1,11 +1,8 @@
 <!-- index.php -->
 <!DOCTYPE html>
 <html lang="fr">
+  <?php if (!isset($ROOT)) $ROOT = './'; ?>
 	<?php include("header.php") ?>
-  
-
-    <div class="container">
-
       <div class="hero-unit">
         <h1>Bienvenue à la Tournoi de JCC <?php date_default_timezone_set("Europe/Paris"); echo date("Y"); ?>!</h1>
         <br>
@@ -65,26 +62,3 @@
 
 	<?php include("footer.php") ?>
 
-
-  </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/bootstrap-datepicker.js"></script>
-
-    <script>
-
-    $(function(){
-      window.prettyPrint && prettyPrint();
-      $('#dpMatch').datepicker({
-        format: 'dd-mm-yyyy'
-      });
-    });
-  
-    </script>
-
-  </body>
-</html>
