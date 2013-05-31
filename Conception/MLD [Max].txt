@@ -14,7 +14,7 @@ admin	boolean
 )
 
 
-tOrganisateurs(		//Organisateurs
+tOrganisateurs(		//Organisateur
 #login => tMembres,
 #annee => Tournoi
 telephone	string
