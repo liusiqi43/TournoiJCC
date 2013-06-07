@@ -51,9 +51,10 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionnaires<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Organisateur</a></li>
+                  <li><a href="<?php echo $ROOT; ?>Modules/Organisateurs/index_show.php">Organisateur</a></li>
                   <li><a href="<?php echo $ROOT; ?>Modules/Joueurs/index_show.php">Joueur</a></li>
-                  <li><a href="#">Match</a></li>
+                  <li><a href="<?php echo $ROOT; ?>Modules/Matches/index_show.php">Match</a></li>
+                  <li><a href="<?php echo $ROOT; ?>Modules/Decks/index_show.php">Deck</a></li>
                   <li class="divider"></li>
                   <li class="nav-header">Besoin d'aide?</li>
                   <li><a href="mailto:me@siqi.fr"><i class="icon-envelope icon-black"></i> Support</a></li>
