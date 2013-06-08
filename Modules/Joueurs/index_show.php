@@ -1,6 +1,8 @@
 <?php 
-include 'index_show_actions.php';
-include $ROOT.'header.php'; ?>
+$ROOT = '../../';
+require_once $ROOT.'global.inc.php';
+require_once 'index_show_actions.php';
+require_once $ROOT.'header.php'; ?>
 
 <!-- // Les css vont dans le assets/css/tournoi.css Et ne modifie jamais bootstrap.css -->
 <h2>Les Joueurs!</h2>
@@ -173,4 +175,4 @@ include $ROOT.'header.php'; ?>
 </p>
 
 <!-- footer -->
-<?php include $ROOT.'footer.php';
+<?php require_once $ROOT.'footer.php';

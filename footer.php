@@ -1,6 +1,6 @@
 <!-- footer.php -->
 
-<div class="footer">
+<div class="navbar navbar-fixed-bottom footer">
     <footer>
     	<p>&copy; Projet NF17&nbsp&nbsp&nbsp&nbsp
     	Groupe: Hugo Trotignon, Maxime Daragon, Pierre Lemaire, Siqi Liu</p>

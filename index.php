@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!-- index.php -->
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,7 +9,7 @@
         <br>
         <p>Sur ce site, vous pouvez consulter le planning, le classement des joueurs, contacter les organisateurs et plus!</p>
         <p style="float:right">(JCC: Jeu de Cartes à Collectionner)</p>
-        <p><a href="#" class="btn btn-primary btn-large">En savoir+ &raquo;</a></p>
+        <p><a href="Modules/Infos/index_show.php" class="btn btn-primary btn-large">En savoir+ &raquo;</a></p>
       </div>
 
       <div class="row">

@@ -1,4 +1,25 @@
 <!-- header.php -->
+<?php
+require_once $ROOT.'global.inc.php';
+require_once $ROOT.'model/logintools.class.php';
+//check to see if they've submitted the login form
+if(isset($_POST['submit-login'])) { 
+
+  $username = $_POST['login'];
+  $password = $_POST['psw'];
+  $error = "";
+
+  $loginTools = new LoginTools();
+  if($loginTools->login($username, $password)){
+  }else{
+    $error = "Buzz!! You can only log in if you are admin and you have correct login+pwd";
+    echo "<div class=\"alert fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$error."</strong></div>";
+  }
+}
+
+?>
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
@@ -45,28 +66,42 @@
           <a class="brand" href="<?php echo $ROOT; ?>index.php">Tournoi de JCC</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="#ranking">Classement</a></li>
-              <li><a href="#schedule">Planning</a></li>
-              <li><a href="#schedule">Stats</a></li>
+              <li><a href="<?php echo $ROOT; ?>Modules/Classement/index_show.php">Classement</a></li>
+              <li><a href="<?php echo $ROOT; ?>Modules/Planning/index_show.php">Planning</a></li>
+              <li><a href="<?php echo $ROOT; ?>Modules/Stats/index_show.php">Stats</a></li>
+              <?php if (isset($_SESSION['logged_in'])): ?>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionnaires<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="<?php echo $ROOT; ?>Modules/Organisateurs/index_show.php">Organisateur</a></li>
                   <li><a href="<?php echo $ROOT; ?>Modules/Joueurs/index_show.php">Joueur</a></li>
                   <li><a href="<?php echo $ROOT; ?>Modules/Matches/index_show.php">Match</a></li>
-                  <li><a href="<?php echo $ROOT; ?>Modules/Decks/index_show.php">Deck</a></li>
+                  <li><a href="<?php echo $ROOT; ?>Modules/Cartes/index_show.php">Cartes</a></li>
                   <li class="divider"></li>
                   <li class="nav-header">Besoin d'aide?</li>
                   <li><a href="mailto:me@siqi.fr"><i class="icon-envelope icon-black"></i> Support</a></li>
                 </ul>
               </li>
-              <li><a href="#about">En Savoir+</a></li>
+              <?php endif; ?>
+              <li><a href="<?php echo $ROOT; ?>Modules/Infos/index_show.php">En Savoir+</a></li>
             </ul>
-            <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email">
-              <input class="span2" type="password" placeholder="Password">
-              <button type="submit" class="btn">Sign in</button>
+          <?php if (!isset($_SESSION['logged_in'])): ?>
+            <form class="navbar-form pull-right" action="<?php echo $ROOT; ?>index.php" method="post">
+              <input class="span2" type="text" placeholder="Login" name="login">
+              <input class="span2" type="password" placeholder="Password" name="psw">
+              <button type="submit" class="btn" name="submit-login">Sign in</button>
             </form>
+          <?php else:?>
+            <?php $member = unserialize($_SESSION['member']); ?>
+            <div class="btn-group pull-right">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#drop-connexion">
+                <i class="icon-user"></i> <?php echo $member->login ?>                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pull-right">
+                <li><a href="<?php echo $ROOT; ?>logout.php">Logout</a></li>
+              </ul>
+            </div>
+          <?php endif ?>
           </div><!--/.nav-collapse -->
         </div>
       </div>

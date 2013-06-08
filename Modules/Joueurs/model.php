@@ -1,6 +1,4 @@
 <?php 
-$ROOT = '../../';
-include $ROOT."connection.php";
 
 // Ces fonctions sont visible dans index_show_actions.php
 // 1 fichier model pour tous les controleurs dans le meme module.
