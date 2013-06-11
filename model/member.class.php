@@ -36,7 +36,11 @@ class Member {
 			$data = array(
 				"login" => "'$this->login'",
 				"password" => "'$this->hashedPassword'",
-				"email" => "'$this->email'"
+				"nom" => "'$this->nom'",
+				"prenom" => "'$this->prenom'",
+				"dateDeNaissance" => "'$this->dateDeNaissance'",
+				"adresse" => "'$this->adresse'",
+				"adresse" => "'$this->admin'"
 			);
 			
 			//update the row in the database
