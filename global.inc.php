@@ -18,7 +18,10 @@ if(isset($_SESSION['logged_in'])) {
 	$member = unserialize($_SESSION['member']);
 	// print_r($member->login);
 	$result = $loginTools->getMember($member->login);
-	// print_r($result);
-	$_SESSION['member'] = serialize($result);
+	if ($result) {
+		$_SESSION['member'] = serialize($result);
+	} else {
+		$loginTools->logout();
+	}
 }
 ?>

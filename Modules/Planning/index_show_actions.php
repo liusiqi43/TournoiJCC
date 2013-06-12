@@ -1,4 +1,3 @@
-<?php require_once("model.php") ?>
 
 <?php
 	// cette variable la est visible dans la vue index_show_action.php

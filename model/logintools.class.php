@@ -51,6 +51,8 @@ class LoginTools {
 	{
 		$db = new DB();
 		$result = $db->exec_sql("SELECT * FROM tmembres WHERE login = '$login';");
+		if(pg_num_rows($result) == 0)
+			return null;
 		return new Member(pg_fetch_assoc($result));
 	}
 	
