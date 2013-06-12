@@ -40,7 +40,7 @@ class Member {
 				"prenom" => "'$this->prenom'",
 				"dateDeNaissance" => "'$this->dateDeNaissance'",
 				"adresse" => "'$this->adresse'",
-				"adresse" => "'$this->admin'"
+				"admin" => "'$this->admin'"
 			);
 			
 			//update the row in the database
