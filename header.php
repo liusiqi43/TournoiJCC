@@ -12,7 +12,7 @@ if(isset($_POST['submit-login'])) {
   $loginTools = new LoginTools();
   if($loginTools->login($username, $password)){
   }else{
-    $error = "Buzz!! You can only log in if you are admin and you have correct login+pwd";
+    $error = "Buzz!! You can only log in if you are organisateur and you have correct login+pwd";
     echo "<div class=\"alert fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$error."</strong></div>";
   }
 }
@@ -73,9 +73,11 @@ if(isset($_POST['submit-login'])) {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionnaires<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="<?php echo $ROOT; ?>Modules/Organisateurs/index_show.php">Organisateur</a></li>
-                  <li><a href="<?php echo $ROOT; ?>Modules/Joueurs/index_show.php">Joueur</a></li>
-                  <li><a href="<?php echo $ROOT; ?>Modules/Matches/index_show.php">Match</a></li>
+                  <?php if ($_SESSION['droit'] == 2): ?>
+                    <li><a href="<?php echo $ROOT; ?>Modules/Organisateurs/index_show.php">Organisateur</a></li>
+                    <li><a href="<?php echo $ROOT; ?>Modules/Joueurs/index_show.php">Joueur</a></li>
+                    <li><a href="<?php echo $ROOT; ?>Modules/Matches/index_show.php">Match</a></li>
+                  <?php endif ?>
                   <li><a href="<?php echo $ROOT; ?>Modules/Cartes/index_show.php">Cartes</a></li>
                   <li class="divider"></li>
                   <li class="nav-header">Besoin d'aide?</li>

@@ -9,54 +9,43 @@ require_once $ROOT.'header.php';
 <div style="float:right;">
 	<table class="table text-right">
 		<tbody><tr>
-			<td><a href="./matchs_files/matchs.htm">2008</a></td>
-			<td><a href="./matchs_files/matchs.htm">2009</a></td>
-			<td><a href="./matchs_files/matchs.htm">2010</a></td>
-			<td><a href="./matchs_files/matchs.htm">2011</a></td>
-			<td><a href="./matchs_files/matchs.htm">2012</a></td>
-		</tr>
+            <?php foreach ($annees as $a): ?>
+            <td><a href="?annee=<?php echo $a; ?>"><?php echo $a; ?></a></td>
+            <?php endforeach ?>
+        </tr>
 	</tbody></table>
 	
 </div>
 <h1>Classement</h1>
-<h2>2009</h2>
+
+<h2><?php echo $annee ?></h2>
+
+<?php if (isset($error)): ?>
+    <?php echo "<div class=\"alert fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$error."</strong></div>"; ?>
+<?php elseif(isset($_SESSION['last_error_msg'])): ?>
+    <?php echo "<div class=\"alert alert-danger fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$db->last_error_msg()."</strong></div>"; ?>
+<?php endif; ?>
+
 <table class="table table-striped table-hover">
 	<tbody>
 	<tr>
-		<th>Joueur</th>
-    <th>Points</th>
-    <th>Matchs joués</th>
-		<th>Matchs gagnés</th>
-    <th>Matchs perdus</th>
-	</tr><tr>
-		<td>Ahryus</td>
-    <td>24</td>
-    <td>8</td>
-		<td>8</td>
-    <td>0</td>
+    	<th>Joueur</th>
+        <th>Matchs joués</th>
+    	<th>Matchs gagnés</th>
+        <th>Matchs perdus</th>
+        <th>%</th>
 	</tr>
-	<tr>
-    <td>Sayanel</td>
-    <td>20</td>
-    <td>8</td>
-		<td>6</td>
-		<td>2</td>
-	</tr>
-  <tr>
-    <td>Gagamaury</td>
-    <td>20</td>
-    <td>8</td>
-    <td>6</td>
-    <td>2</td>
-  </tr>
-  <tr>
-    <td>Toto</td>
-    <td>15</td>
-    <td>7</td>
-    <td>5</td>
-    <td>2</td>
-  </tr>
-</tbody></table>
+    <?php foreach ($joueurs as $joueur):?>
+        <tr>
+            <td><?php echo $joueur['nick'] ?></td>
+            <td><?php echo $joueur['total']?></td>
+            <td><?php echo $joueur['win']?></td>
+            <td><?php echo $joueur['lose']?></td>
+            <td><?php echo ($joueur['win']/$joueur['total']*100).'%'?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
 
 <!-- footer -->
 <?php require_once $ROOT.'footer.php';

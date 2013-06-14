@@ -1,14 +1,17 @@
-﻿DROP TABLE IF EXISTS tMembres;
-DROP TABLE IF EXISTS tOrganisateurs;
-DROP TABLE IF EXISTS tJoueurs;
-DROP TABLE IF EXISTS tCartes;
-DROP TABLE IF EXISTS tCartesInvention;
-DROP TABLE IF EXISTS tCartesRessource;
-DROP TABLE IF EXISTS tCartesEffet;
-DROP TABLE IF EXISTS tFacultes;
-DROP TABLE IF EXISTS tTournois;
-DROP TABLE IF EXISTS tParticipations;
-DROP TABLE IF EXISTS tDecks;
+
+DROP TABLE IF EXISTS tOrganisateurs CASCADE;
+/*DROP TABLE IF EXISTS tJoueurs CASCADE;*/
+/*DROP TABLE IF EXISTS tCartes CASCADE;*/
+DROP TABLE IF EXISTS tCartesInvention CASCADE;
+DROP TABLE IF EXISTS tCartesRessource CASCADE;
+DROP TABLE IF EXISTS tCartesEffet CASCADE;
+DROP TABLE IF EXISTS tFacultes CASCADE;
+DROP TABLE IF EXISTS tTournois CASCADE;
+DROP TABLE IF EXISTS tParticipations CASCADE;
+DROP TABLE IF EXISTS tDecks CASCADE;
+DROP TABLE IF EXISTS tMatchs CASCADE;
+/*DROP TABLE IF EXISTS tMembres CASCADE;*/
+﻿
 
 -- tMembres(			//Membres
 -- #login	string,
@@ -21,37 +24,18 @@ DROP TABLE IF EXISTS tDecks;
 -- )
 
 
+/* Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
 CREATE TABLE tMembres
 (
-	login varchar(25),
-	pwd varchar(25), 
+	login varchar(25) PRIMARY KEY,
+	admin boolean,
+	pwd varchar(25),
 	nom varchar(25),
 	prenom varchar(25),
 	dateDeNaissance date,
-	adresse varchar(100),
-	admin boolean
-	PRIMARY KEY(login)
-);
+	adresse varchar(100)
+);*/ 
 
-/*
-tOrganisateurs(		//Organisateurs
-#login => tMembres,
-#annee => Tournoi
-telephone	string
-)
---- PROJ (Organisateur,login) IN PROJ(Membre,login)
-*/
-
-CREATE TABLE tOrganisateurs
-(
-	login varchar(25),
-	annee int,
-	telephone varchar(8),
-	PRIMARY KEY(login, annee),
-	FOREIGN KEY(login) REFERENCES tMembres(login),
-	FOREIGN KEY(annee) REFERENCES tTournois(annee),
-	
-);
 
 /*
 tJoueurs(			//Joueurs
@@ -59,28 +43,28 @@ tJoueurs(			//Joueurs
 )
 */
 
-CREATE TABLE tJoueurs
+/*CREATE TABLE tJoueurs Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
 (
 	login varchar(25),
 	PRIMARY KEY(login),
 	FOREIGN KEY(login) REFERENCES tMembres(login)
-);
+);*/
 
 
 /*
-tCartes(				//Cartes
+tCartes(				//Cartes 
 #nom			string,
 extentionStS	string,
 dateInterdite	date
 )
 */
 
-CREATE TABLE tCartes(
+/*CREATE TABLE tCartes(  Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
 	nom varchar(25),
 	extensionStS varchar(25),
 	dateInterdite date,
 	PRIMARY KEY(nom)
-);
+);*/
 
 
 /*
@@ -92,14 +76,14 @@ coutRessource		integer NOT NULL,
 )
 */
 
-CREATE TABLE tCartesInvention
+/*CREATE TABLE tCartesInvention           Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
 (
 	nom varchar(25),
 	potentielAttaque int NOT NULL,
 	potentielDefense int NOT NULL,
 	coutRessource int NOT NULL,
 	PRIMARY KEY(nom)
-);
+);*/
 
 /*
 tCartesRessource(		//Ressources
@@ -141,7 +125,7 @@ CREATE TABLE tFacultes
 (
 	nom varchar(25),
 	description varchar(100) NOT NULL,
-	PRIMARY KEY(nom) REFERENCES tCartes(nom)
+	FOREIGN KEY(nom) REFERENCES tCartes(nom)
 );
 
 /*
@@ -155,11 +139,32 @@ date date(mm-jj),
 CREATE TABLE tTournois
 (
 	annee int,
-	Tdate date, /* Ici j'ai mis un int parce que je ne trouve pas de date style mm-jj. datetime Il y a mm-jj-yyyy mais c'est tout. */
+	Tdate date, 
 	PRIMARY KEY(annee)
 );  
 
 -- TODO trigger sur l'insertion pour vérifier la cohérence entre année date
+
+
+/*
+tOrganisateurs(		//Organisateurs
+#login => tMembres,
+#annee => Tournoi
+telephone	string
+)
+--- PROJ (Organisateur,login) IN PROJ(Membre,login)
+*/
+
+CREATE TABLE tOrganisateurs 
+(
+	login varchar(25),
+	annee int,
+	telephone varchar(10),
+	PRIMARY KEY(login, annee),
+	FOREIGN KEY(login) REFERENCES tMembres (login),
+	FOREIGN KEY(annee) REFERENCES tTournois (annee)
+	
+);
 
 /*
 tMatchs(							//Matchs
@@ -187,7 +192,7 @@ CREATE TABLE tMatchs
 	PRIMARY KEY(annee_tournoi, horaire, jour, numeroSalle, numeroTable),
 	FOREIGN KEY(annee_tournoi) REFERENCES tTournois(annee),
 	FOREIGN KEY(j1) REFERENCES tJoueurs(login),
-	FOREIGN KEY(j2) REFERENCES tJoueurs(login),
+	FOREIGN KEY(j2) REFERENCES tJoueurs(login)
 );
 
 /*
@@ -208,7 +213,7 @@ CREATE TABLE tParticipations
 	nomDeck varchar(25) UNIQUE NOT NULL,
 	PRIMARY KEY(login, annee),
 	FOREIGN KEY(login) REFERENCES tJoueurs(login),
-	FOREIGN KEY(annee) REFERENCES tTournois(annee),
+	FOREIGN KEY(annee) REFERENCES tTournois(annee)
 );
 
 /*
@@ -227,6 +232,6 @@ CREATE TABLE tDecks
 	nom varchar(25),
 	PRIMARY KEY(login, annee, nom),
 	FOREIGN KEY(login, annee) REFERENCES tParticipations(login, annee),
-	FOREIGN KEY(nom) REFERENCES tCartes(nom),
+	FOREIGN KEY(nom) REFERENCES tCartes(nom)
 	-- /*CHECK (COUNT(nom)<=30) @TODO faire u ntrigger */
 );

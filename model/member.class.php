@@ -8,21 +8,19 @@ class Member {
 	public $password;
 	public $nom;
 	public $prenom;
-	public $dateDeNaissance;
+	public $datedenaissance;
 	public $adresse;
-	public $admin;
 
 
 	//Constructor is called whenever a new object is created.
 	//Takes an associative array with the DB row as an argument.
 	function __construct($data) {
 		$this->login = (isset($data['login'])) ? $data['login'] : "";
-		$this->password = (isset($data['password'])) ? $data['password'] : "";
+		$this->password = (isset($data['pwd'])) ? $data['pwd'] : "";
 		$this->nom = (isset($data['nom'])) ? $data['nom'] : "";
 		$this->prenom = (isset($data['prenom'])) ? $data['prenom'] : "";
-		$this->dateDeNaissance = (isset($data['dateDeNaissance'])) ? $data['dateDeNaissance'] : "";
+		$this->datedenaissance = (isset($data['datedenaissance'])) ? $data['datedenaissance'] : "";
 		$this->adresse = (isset($data['adresse'])) ? $data['adresse'] : "";
-		$this->admin = (isset($data['admin'])) ? $data['admin'] : "";
 	}
 
 	public function save($isNewUser = false) {
@@ -32,26 +30,36 @@ class Member {
 		//if the user is already registered and we're
 		//just updating their info.
 		if(!$isNewUser) {
-			//set the data array
-			$data = array(
-				"login" => "'$this->login'",
-				"password" => "'$this->hashedPassword'",
-				"nom" => "'$this->nom'",
-				"prenom" => "'$this->prenom'",
-				"dateDeNaissance" => "'$this->dateDeNaissance'",
-				"adresse" => "'$this->adresse'",
-				"admin" => "'$this->admin'"
-			);
-			
 			//update the row in the database
-			$db->exec_sql('UPDATE tmembres set admin = '.$this->admin.', pwd = '.$this->password.', nom='.$this->nom.', prenom='.$this->prenom.', datedenaissance='.$this->dateDeNaissance.', adresse='.$this->adresse.' where login ='.$this->login.';');
+			$sql ="UPDATE tmembres set pwd = '$this->password', nom='$this->nom', prenom='$this->prenom', datedenaissance='$this->datedenaissance', adresse='$this->adresse' WHERE login ='$this->login';";
+			// print_r($sql);
+			return $db->exec_sql($sql);
 		} else {
 		//if the user is being registered for the first time.
-			$db->exec_sql('INSERT INTO tmembres VALUES('.$this->login.','.$this->admin.','.$this->password.', '.$this->nom.', '.$this->prenom.', '.$this->dateDeNaissance.', '.$this->adresse.');');
+			return $db->exec_sql("INSERT INTO tmembres VALUES('$this->login','$this->password', '$this->nom', '$this->prenom', '$this->datedenaissance', '$this->adresse');");
 		}
-		return true;
 	}
-	
+
+	public static function getAllLoginNonOrg($annee){
+		$db = new DB();
+
+		$sql ="SELECT tm.login FROM tmembres tm LEFT JOIN torganisateurs torg ON tm.login = torg.login WHERE torg.login is null or annee!='$annee' ORDER BY tm.login;";
+		$result = $db->exec_sql($sql);
+
+		$logins = pg_fetch_all($result);
+		return $logins;
+	}
+
+
+	public static function getAllLoginNonJoueurs($annee){
+		$db = new DB();
+
+		$sql ="SELECT tm.login FROM tmembres tm LEFT JOIN tparticipations tp ON tm.login = tp.login WHERE tp.login is null or annee!='$annee' ORDER BY tm.login;";
+		$result = $db->exec_sql($sql);
+
+		$logins = pg_fetch_all($result);
+		return $logins;
+	}
 }
 
 ?>
