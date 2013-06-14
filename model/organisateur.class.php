@@ -28,10 +28,6 @@ class Organisateur extends Member{
 		//just updating their info.
 		if(!$isNewUser) {
 			//set the data array
-			$data = array(
-				"telephone" => "'$this->telephone'",
-				"annee" => "'$this->annee'"
-			);
 			
 			//update the row in the database
 			$sql = "UPDATE torganisateurs set annee = '$this->annee', telephone='$this->telephone' WHERE login = '$this->login' AND annee = '$this->annee';";

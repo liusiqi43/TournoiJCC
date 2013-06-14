@@ -1,4 +1,5 @@
 <?php
+	$ROOT = '../../';
 	require_once '../../model/tournoi.class.php';
 	// cette variable la est visible dans la vue index_show_action.php
 	// On fait appel aux fonctions dans model.php depuis ici. 
@@ -11,19 +12,20 @@
 
 	if (isset($_GET["delete"])) {
 		$action = "delete";
-		$result = $db->exec_sql('DELETE FROM torganisateurs where login='.$_GET["delete"].' AND annee='.$_GET["annee"].';');
+		$result = $db->exec_sql('DELETE FROM torganisateurs where login=\''.$_GET["delete"].'\' AND annee='.$_GET["annee"].';');
 		if (!$result) {
 			$error = "Arrêtez de jouer avec la pauvre URL!! C'est un projet étudiant!";
 		}
-
-		if ($_GET["delete"]==$member->login && $result) {
+		
+		$user = unserialize($_SESSION['member']);	
+		if ($_GET["delete"]==$user->login && $result) {
 			$loginTools->logout();
 		}
 	}
 
 	if (isset($_GET["modify"])) {
 		$action = "modify";
-		$result = $db->exec_sql('SELECT * FROM torganisateurs torg, tmembres tm WHERE torg.login = tm.login AND tm.login = '.$_GET["modify"].' AND torg.annee = '.$annee.';');
+		$result = $db->exec_sql('SELECT * FROM torganisateurs torg, tmembres tm WHERE torg.login = tm.login AND tm.login = \''.$_GET["modify"].'\' AND torg.annee = '.$annee.';');
 		if (pg_num_rows($result)) {
 			$org_to_modify = new Organisateur(pg_fetch_assoc($result));
 		} else {
@@ -36,7 +38,7 @@
 		$newOrg = array('annee'=>$annee);
 		$org_to_modify = new Organisateur($newOrg);
 
-		$logins = Member::getAllLoginNonOrg($annee);
+		$logins = Member::getAllLoginEligible($annee);
 	}
 
 	$result = $db->exec_sql("SELECT * FROM torganisateurs torg, tmembres tm WHERE torg.login = tm.login AND torg.annee = $annee ORDER BY tm.nom ASC");

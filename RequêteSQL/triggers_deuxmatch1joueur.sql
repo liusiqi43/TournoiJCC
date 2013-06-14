@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION check_un_joueur_pas_deux_matches() RETURNS trigger AS
         SELECT count(*) INTO count_match
         FROM tMatchs tm
         WHERE ((tm.j1 = NEW.j1) OR (tm.j1 = NEW.j2) OR (tm.j2 = NEW.j1) OR (tm.j2 = NEW.j2)) AND 
-        tm.annee_tournoi = NEW.annee_tournoi AND tm.horaire = NEW.horaire AND tm.jour = NEW.jour;
+        tm.annee_tournoi = NEW.annee_tournoi AND tm.horaire = NEW.horaire AND tm.jour = NEW.jour AND tm.key_column != NEW.key_column;
 
         IF count_match > 0 THEN
             RAISE EXCEPTION 'Joueur 1 ou Joeur 2 est déjà occupé à cette heure-ci!';

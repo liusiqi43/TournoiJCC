@@ -15,13 +15,13 @@ class DB {
 		$this->v_conn = pg_connect("host=$this->db_host dbname=$this->db_name user=$this->db_user password=$this->db_pass");
 	}
 
-	public function exec_sql($sql){
+	public function exec_sql($sql, $ignore_error = false){
 		if(!isset($this->v_conn)){
 			$this->connect();
 		} 
 		// print_r($sql);
 		$result = pg_query($this->v_conn, $sql);
-		if(!$result){
+		if(!$result && !$ignore_error){
 			$_SESSION['last_error_msg'] = pg_last_error($this->v_conn);
 		}
 		return $result;

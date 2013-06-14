@@ -88,37 +88,40 @@ require_once $ROOT.'header.php'; ?>
 		</div>
 		<div class="span6">
 			<h3>Nouveau Membre?</h3>
-			<form>
+			<form action="update_success.php" method="POST">
 				<table>
 					<tr>
 						<input type="hidden" name="action" value="new">
-						<input type="hidden" name="pwd" value="<?php echo $org_to_modify->password; ?>">
 						<td>login:&nbsp&nbsp</td><td><input type="text" name="login" value="<?php echo $org_to_modify->login; ?>"></td>
+					</tr>
+					<tr>
+						<td>password:&nbsp&nbsp</td><td><input type="password" name="pwd" value="<?php echo $org_to_modify->password; ?>"></td>
 					</tr>
 					<tr>
 						<td>année d'organisation:&nbsp&nbsp</td><td><input type="text" name="annee" readonly value="<?php echo $org_to_modify->annee; ?>"></td>
 					</tr>
-					<tr><td>nom:&nbsp&nbsp</td><td><input type="text" name="nom" value="<?php echo $org_to_modify->nom; ?>"></td>
-				</tr>
-				<tr>
-					<td>prenom:&nbsp&nbsp</td><td><input type="text" name="prenom" value="<?php echo $org_to_modify->prenom; ?>"></td>
-				</tr>
-				<tr>
-					<td>address:&nbsp&nbsp</td><td><input type="text" name="address" value="<?php echo $org_to_modify->adresse; ?>"></td>
-				</tr>
-				<tr>
-					<td>telephone:&nbsp&nbsp</td><td><input type="text" name="telephone" value="<?php echo $org_to_modify->telephone; ?>"></td>
-				</tr>
-				<tr>
-					<td>date de naissance: &nbsp&nbsp</td><td><input type="text" id="dpMatch" name="dateDeNaissance" value="<?php echo $org_to_modify->datedenaissance; ?>"></td>
-				</tr>
-				<tr>
-					<td></td><td><input type="submit" class="btn btn-success pull-right" name="update_org-submit" value="Valider"></td>
-				</tr>
-			</table>
-		</form>
+					<tr>
+						<td>nom:&nbsp&nbsp</td><td><input type="text" name="nom" value="<?php echo $org_to_modify->nom; ?>"></td>
+					</tr>
+					<tr>
+						<td>prenom:&nbsp&nbsp</td><td><input type="text" name="prenom" value="<?php echo $org_to_modify->prenom; ?>"></td>
+					</tr>
+					<tr>
+						<td>address:&nbsp&nbsp</td><td><input type="text" name="address" value="<?php echo $org_to_modify->adresse; ?>"></td>
+					</tr>
+					<tr>
+						<td>telephone:&nbsp&nbsp</td><td><input type="text" name="telephone" value="<?php echo $org_to_modify->telephone; ?>"></td>
+					</tr>
+					<tr>
+						<td>date de naissance: &nbsp&nbsp</td><td><input type="text" id="dpMatch" name="dateDeNaissance" value="<?php echo $org_to_modify->datedenaissance; ?>"></td>
+					</tr>
+					<tr>
+						<td></td><td><input type="submit" class="btn btn-success pull-right" name="update_org-submit" value="Valider"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
 	</div>
-</div>
 <?php endif ?>
 
 
@@ -128,6 +131,8 @@ require_once $ROOT.'header.php'; ?>
 			<th>Nom</th>
 			<th>Prenom</th>
 			<th>Telephone</th>
+			<th>Date de Naissance</th>
+			<th>Addresse</th>
 			<?php if ($admin): ?>
 			<th>Actions</th>
 		<?php endif ?>
@@ -137,10 +142,12 @@ require_once $ROOT.'header.php'; ?>
 		<td><?php echo $org->nom; ?></td>
 		<td><?php echo $org->prenom; ?></td>
 		<td><?php echo $org->telephone; ?></td>
+		<td><?php echo $org->datedenaissance; ?></td>
+		<td><?php echo $org->adresse; ?></td>
 		<?php if ($admin): ?>
 		<td>
-			<?php echo "<a href=\"?annee=$annee&modify='$org->login'\" class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i></a>"; ?>
-			<?php echo "<a href=\"?annee=$annee&delete='$org->login'\" class=\"btn btn-danger\"><i class=\"icon-trash icon-white\"></i></a>"; ?>
+			<?php echo "<a href=\"?annee=$annee&modify=$org->login\" class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i></a>"; ?>
+			<?php echo "<a href=\"?annee=$annee&delete=$org->login\" class=\"btn btn-danger\"><i class=\"icon-trash icon-white\"></i></a>"; ?>
 		</td>
 	<?php endif ?>
 </tr>

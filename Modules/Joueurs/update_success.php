@@ -3,9 +3,9 @@ $ROOT = '../../';
 require_once $ROOT.'global.inc.php';
 require_once $ROOT.'header.php';
 
-require_once '../../model/organisateur.class.php';
+require_once '../../model/participation.class.php';
 
-if(isset($_POST['update_org-submit'])) { 
+if(isset($_POST['update_part-submit'])) { 
 	if($_POST['action'] == 'modify' OR $_POST['action'] == 'new'){
 		$data = array(
 		'login' => $_POST['login'], 
@@ -13,25 +13,25 @@ if(isset($_POST['update_org-submit'])) {
 		'annee' => $_POST['annee'],
 		'nom' => $_POST['nom'],
 		'prenom' => $_POST['prenom'],
-		'telephone' => $_POST['telephone'],
+		'surnom' => $_POST['surnom'],
 		'datedenaissance' => $_POST['dateDeNaissance'],
 		'adresse' => $_POST['address']
 		);
-	$newOrg = new Organisateur($data);
-	
+	print_r($data);
+	$newPart = new Participation($data);
+
 		if ($_POST['action'] == "modify") {
-			$newOrg->save();
+			$newPart->save();
 		} else if ($_POST['action'] == "new"){
-			$newOrg->save(true);
+			$newPart->save(true);
 		}
 	
-	} else if ($_POST['action'] == "new_org"){
-		$data = array(
-		'login' => $_POST['login'], 
-		'annee' => $_POST['annee'],
-		'telephone' => $_POST['telephone']
-		);
-		$db->exec_sql('INSERT INTO torganisateurs VALUES (\''.$data['login'].'\', \''.$data['annee'].'\', \''.$data['telephone'].'\');');
+	} else if ($_POST['action'] == "new_part"){
+		$login = $_POST['login'];
+		$annee = $_POST['annee'];
+		$surnom = $_POST['surnom'];
+		$db->exec_sql("INSERT INTO tjoueurs VALUES('$login');", true);
+		$db->exec_sql("INSERT INTO tparticipations VALUES( '$login', '$annee', '$surnom');");
 	}
 	header("Location: index_show.php");
 } else {

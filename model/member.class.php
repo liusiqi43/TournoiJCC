@@ -40,21 +40,10 @@ class Member {
 		}
 	}
 
-	public static function getAllLoginNonOrg($annee){
+	public static function getAllLoginEligible($annee){
 		$db = new DB();
 
-		$sql ="SELECT tm.login FROM tmembres tm LEFT JOIN torganisateurs torg ON tm.login = torg.login WHERE torg.login is null or annee!='$annee' ORDER BY tm.login;";
-		$result = $db->exec_sql($sql);
-
-		$logins = pg_fetch_all($result);
-		return $logins;
-	}
-
-
-	public static function getAllLoginNonJoueurs($annee){
-		$db = new DB();
-
-		$sql ="SELECT tm.login FROM tmembres tm LEFT JOIN tparticipations tp ON tm.login = tp.login WHERE tp.login is null or annee!='$annee' ORDER BY tm.login;";
+		$sql ="select login from tmembres except ((select login from tparticipations where annee = '$annee') union (select login from torganisateurs where annee='$annee')) ORDER BY login;";
 		$result = $db->exec_sql($sql);
 
 		$logins = pg_fetch_all($result);

@@ -35,15 +35,18 @@ require_once $ROOT.'header.php';
         <th>Matchs perdus</th>
         <th>%</th>
 	</tr>
+    <?php if (is_array($joueurs)): ?>
+        
     <?php foreach ($joueurs as $joueur):?>
         <tr>
             <td><?php echo $joueur['nick'] ?></td>
             <td><?php echo $joueur['total']?></td>
             <td><?php echo $joueur['win']?></td>
             <td><?php echo $joueur['lose']?></td>
-            <td><?php echo ($joueur['win']/$joueur['total']*100).'%'?></td>
+            <td><?php echo (round($joueur['win']/$joueur['total']*100, 2)).'%'?></td>
         </tr>
     <?php endforeach; ?>
+    <?php endif ?>
     </tbody>
 </table>
 

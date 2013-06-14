@@ -12,15 +12,13 @@
 	}
 
 
-	$result = $db->exec_sql("SELECT * from get_matches_infos_for_all('$annee') ORDER BY (win/total) DESC;");
+	$result = $db->exec_sql("SELECT * from get_matches_infos_for_all('$annee') WHERE total!=0 ORDER BY win DESC, total asc;");
 
 	if (!pg_num_rows($result)) {
 		$error = "Aucun résultat pour le moment... ";
 	}
-	$joueurs = array();
-	while ($row = pg_fetch_assoc($result)) {
-		array_push($joueurs, $row);
-	}
+	// $joueurs = array();
+	$joueurs = pg_fetch_all($result);
 
 	if (!in_array($annee, $annees))
     	$error = "Arretez de jouer avec le URL!!";

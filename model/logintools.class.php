@@ -42,7 +42,10 @@ class LoginTools {
         unset($_SESSION['login_time']);  
         unset($_SESSION['logged_in']);  
         unset($_SESSION['droit']);
-        session_destroy();  
+        session_destroy();
+        $ROOT = "../../";
+        header('Location: '.$ROOT.'index.php');
+        exit;
     }  
 
 	//Check to see if a username exists.
