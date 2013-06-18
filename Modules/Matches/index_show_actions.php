@@ -30,7 +30,7 @@
 		$result = $db->exec_sql('SELECT * FROM tmatchs tm WHERE tm.key_column = '.$_GET["modify"].';');
 		if (pg_num_rows($result)) {
 			$match_to_modify = new Match(pg_fetch_assoc($result));
-			print_r($match_to_modify);
+			//print_r($match_to_modify);
 		} else {
 			$error = "Arrêtez de jouer avec la pauvre URL!! C'est un projet étudiant!";
 		}
@@ -74,10 +74,14 @@
 	} else 
 	$admin = false;
 
-	$result = $db->exec_sql("SELECT login, surnom FROM tparticipations tp WHERE tp.annee = $annee ORDER BY tp.surnom ASC;");
+	if ($_SESSION['droit'] == 3) {
+		$admin = true;
+	}
+
+	$result = $db->exec_sql("SELECT login, surnom FROM tparticipations tp WHERE tp.annee = $annee AND tp.elimine = false ORDER BY tp.surnom ASC;");
 
 	if (!pg_num_rows($result)) {
-		$error = "Vous devez ajouter d'abord des joueurs!";
+		$error = "Vous devez ajouter d'abord des joueurs non elimine!";
 	}
 	$joueurs = pg_fetch_all($result);
 

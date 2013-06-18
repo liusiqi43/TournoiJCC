@@ -14,7 +14,6 @@ require_once $ROOT.'header.php';
             <?php endforeach ?>
         </tr>
 	</tbody></table>
-	
 </div>
 <h1>Classement</h1>
 
@@ -46,6 +45,38 @@ require_once $ROOT.'header.php';
             <td><?php echo (round($joueur['win']/$joueur['total']*100, 2)).'%'?></td>
         </tr>
     <?php endforeach; ?>
+    <?php endif ?>
+    </tbody>
+</table>
+
+
+
+<h3>Joueur Eliminés</h3>
+<?php if (isset($error_e)): ?>
+    <?php echo "<div class=\"alert fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$error_e."</strong></div>"; ?>
+<?php endif; ?>
+<table class="table table-striped table-hover">
+    <tbody>
+    <tr>
+        <th>Joueur</th>
+        <th>Matchs joués</th>
+        <th>Matchs gagnés</th>
+        <th>Matchs perdus</th>
+        <th>%</th>
+    </tr>
+    <?php if (is_array($joueurs)): ?>
+        <?php if (is_array($joueurs_elimine)): ?>
+            
+    <?php foreach ($joueurs_elimine as $joueur):?>
+        <tr>
+            <td><?php echo $joueur['nick'] ?></td>
+            <td><?php echo $joueur['total']?></td>
+            <td><?php echo $joueur['win']?></td>
+            <td><?php echo $joueur['lose']?></td>
+            <td><?php echo (round($joueur['win']/$joueur['total']*100, 2)).'%'?></td>
+        </tr>
+    <?php endforeach; ?>
+    <?php endif ?>
     <?php endif ?>
     </tbody>
 </table>

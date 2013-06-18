@@ -148,8 +148,44 @@ require_once $ROOT.'header.php'; ?>
 		<td>
 			<?php echo "<a href=\"?annee=$annee&modify=$participation->login\" class=\"btn btn-primary\"><i class=\"icon-pencil icon-white\"></i></a>"; ?>
 			<?php echo "<a href=\"?annee=$annee&delete=$participation->login\" class=\"btn btn-danger\"><i class=\"icon-trash icon-white\"></i></a>"; ?>
+			<?php echo "<a href=\"?annee=$annee&elimine=$participation->login\" class=\"btn btn-danger\"><i class=\"icon-remove-circle icon-white\"></i></a>"; ?>
 		</td>
 	<?php endif ?>
+</tr>
+<?php endforeach ?>
+</tbody></table>
+
+<h3>Eliminés</h3>
+
+<?php if (isset($error_e)): ?>
+	<?php echo "<div class=\"alert fade in\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\">x</button><strong>".$error_e."</strong></div>"; ?>
+<?php endif; ?>
+
+<table class="table table-striped table-hover">
+	<tbody>
+		<tr>
+			<th>Nom</th>
+			<th>Prenom</th>
+			<th>Surnom</th>
+			<th>Adresse</th>
+			<th>Date de Naissance</th>
+			<?php if ($admin): ?>
+			<th>Actions</th>
+		<?php endif ?>
+	</tr>
+
+	<?php foreach ($participation_elimine as $participation): ?>
+	<tr>
+		<td><?php echo $participation->joueur->nom; ?></td>
+		<td><?php echo $participation->joueur->prenom; ?></td>
+		<td><?php echo $participation->surnom; ?></td>
+		<td><?php echo $participation->joueur->adresse; ?></td>
+		<td><?php echo $participation->joueur->datedenaissance; ?></td>
+		<?php if ($admin): ?>
+		<td>
+			<?php echo "<a href=\"?annee=$annee&qualifie=$participation->login\" class=\"btn btn-success\"><i class=\"icon-ok-circle icon-white\"></i></a>"; ?>
+		</td>
+		<?php endif ?>
 </tr>
 <?php endforeach ?>
 </tbody></table>

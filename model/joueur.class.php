@@ -17,6 +17,7 @@ class Joueur extends Member{
 
 	public function save($isNewUser = false) {
 		$db = new DB();
+		parent::save($IsNewMember);
 
 		$db->exec_sql("BEGIN TRANSACTION;");
 		$success = parent::save($isNewUser);
@@ -32,8 +33,10 @@ class Joueur extends Member{
 			// var_dump($sql);
 			$success = $db->exec_sql($sql);
 		} else {
-		//if the user is being registered for the first time.
-			$success = $db->exec_sql("INSERT INTO tJoueurs VALUES('$this->login');");
+		//if the user is being registered for the first time.		    
+			if (pg_num_rows($db->exec_sql("SELECT login FROM tJoueurs where login = '$this->login';"))==0) {
+				$success = $db->exec_sql("INSERT INTO tJoueurs VALUES('$this->login');");
+		    }
 		}
 		if ($success) {
 			$db->exec_sql("COMMIT;");
@@ -43,7 +46,19 @@ class Joueur extends Member{
 			return false;
 		}
 	}
+
+		public function getAnnees(){
+		$db = new DB();
+		$result = array();
+		$r = $db->exec_sql("SELECT annee FROM tparticipations tp WHERE tp.login = '$this->login';");
+		while ($row = pg_fetch_assoc($r)) {
+			array_push($result, $row["annee"]);
+		}
+		return $result;
+	}
 	
 }
+
+
 
 ?>

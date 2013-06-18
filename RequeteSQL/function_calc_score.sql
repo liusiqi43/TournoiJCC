@@ -1,6 +1,6 @@
 
 
-CREATE OR REPLACE FUNCTION get_matches_infos(INOUT year int, INOUT login varchar, INOUT nick varchar, OUT win int, OUT lose int, OUT total int) AS $$
+CREATE OR REPLACE FUNCTION get_matches_infos(INOUT year int, INOUT login varchar, INOUT nick varchar, INOUT elimine bool, OUT win int, OUT lose int, OUT total int) AS $$
     BEGIN
         SELECT count(*) INTO win
         FROM tmatchs tm, tparticipations tp

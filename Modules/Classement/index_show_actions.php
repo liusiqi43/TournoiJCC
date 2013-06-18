@@ -12,13 +12,20 @@
 	}
 
 
-	$result = $db->exec_sql("SELECT * from get_matches_infos_for_all('$annee') WHERE total!=0 ORDER BY win DESC, total asc;");
+	$result = $db->exec_sql("SELECT * from get_matches_infos_for_all('$annee') WHERE total!=0 AND elimine = false ORDER BY win DESC, total asc;");
 
 	if (!pg_num_rows($result)) {
-		$error = "Aucun résultat pour le moment... ";
+		$error = "Aucun joueur non elimie ont joue un match pour le moment... ";
 	}
-	// $joueurs = array();
 	$joueurs = pg_fetch_all($result);
+
+
+	$result = $db->exec_sql("SELECT * from get_matches_infos_for_all('$annee') WHERE total!=0 AND elimine = true ORDER BY win DESC, total asc;");
+
+	if (!pg_num_rows($result)) {
+		$error_e = "Aucun joueur elimine ayant joue au moins un match pour le moment... ";
+	}
+	$joueurs_elimine = pg_fetch_all($result);
 
 	if (!in_array($annee, $annees))
     	$error = "Arretez de jouer avec le URL!!";

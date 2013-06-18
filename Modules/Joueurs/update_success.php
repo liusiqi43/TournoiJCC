@@ -15,7 +15,8 @@ if(isset($_POST['update_part-submit'])) {
 		'prenom' => $_POST['prenom'],
 		'surnom' => $_POST['surnom'],
 		'datedenaissance' => $_POST['dateDeNaissance'],
-		'adresse' => $_POST['address']
+		'adresse' => $_POST['address'],
+		'elimine' => isset($_POST['elimine']) ? $_POST['elimine'] : 'false'
 		);
 	print_r($data);
 	$newPart = new Participation($data);

@@ -28,10 +28,10 @@ class Faculte {
 			);
 			
 			//update the row in the database
-			$db->exec_sql('UPDATE tfacultes set description='.$this->description.' where nom ='.$this->nom.';');
+			$db->exec_sql("UPDATE tfacultes set description='$this->description' where nom ='$this->nom';");
 		} else {
 		//if the user is being registered for the first time.
-			$db->exec_sql('INSERT INTO tfacultes VALUES('.$this->nom.','.$this->description.');');
+			$db->exec_sql("INSERT INTO tfacultes VALUES('$this->nom','$this->description');");
 		}
 		return true;
 	}

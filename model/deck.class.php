@@ -18,13 +18,13 @@ class Deck {
 
 	public function save($isNewDeck = false) {
 		$db = new DB();
-		$db->exec_sql('INSERT INTO tdecks VALUES('.$this->login.','.$this->annee.','.$this->nom.');');
+		$db->exec_sql("INSERT INTO tdecks VALUES('$this->login',$this->annee,'$this->nom');");
 		return true;
 	}
 
 	public function delete($login, $annee, $nom) {
 		$db = new DB();
-		$db->exec_sql('DELETE FROM tdecks WHERE login = '$login.' AND annee ='.$annee.' AND '.$nom.');');
+		$db->exec_sql("DELETE FROM tdecks WHERE login = '$login.' AND annee =$annee AND '.$nom.');");
 		return true;
 	}
 }

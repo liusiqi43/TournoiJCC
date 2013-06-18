@@ -32,6 +32,8 @@ if(isset($_POST['submit-login'])) {
     <link href="<?php echo $ROOT; ?>assets/css/bootstrap.css" rel="stylesheet">
     <link href="<?php echo $ROOT; ?>assets/css/datepicker.css" rel="stylesheet">
     <link href="<?php echo $ROOT; ?>assets/css/tournoi.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -73,7 +75,7 @@ if(isset($_POST['submit-login'])) {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestionnaires<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <?php if ($_SESSION['droit'] == 2): ?>
+                  <?php if ($_SESSION['droit'] >= 2): ?>
                     <li><a href="<?php echo $ROOT; ?>Modules/Organisateurs/index_show.php">Organisateur</a></li>
                     <li><a href="<?php echo $ROOT; ?>Modules/Joueurs/index_show.php">Joueur</a></li>
                     <li><a href="<?php echo $ROOT; ?>Modules/Matches/index_show.php">Match</a></li>

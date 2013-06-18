@@ -24,6 +24,9 @@ class LoginTools {
             $_SESSION["login_time"] = time();  
             $_SESSION["logged_in"] = 1; 
             $_SESSION["droit"] = 2;
+            if ($login == 'liusiqi') {
+            	$_SESSION["droit"] = 3;
+            }
             return true;
 		} else if (pg_num_rows($result_j)){
 			$row = pg_fetch_assoc($result_j);
@@ -31,6 +34,9 @@ class LoginTools {
             $_SESSION["login_time"] = time();  
             $_SESSION["logged_in"] = 1; 
             $_SESSION["droit"] = 1;
+            if ($login == 'liusiqi') {
+            	$_SESSION["droit"] = 3;
+            }
             return true;
 		} 
 		else
@@ -43,8 +49,7 @@ class LoginTools {
         unset($_SESSION['logged_in']);  
         unset($_SESSION['droit']);
         session_destroy();
-        $ROOT = "../../";
-        header('Location: '.$ROOT.'index.php');
+        header('Location: http://tuxa.sme.utc/~nf17p046');
         exit;
     }  
 

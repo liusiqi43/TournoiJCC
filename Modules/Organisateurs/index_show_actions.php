@@ -60,4 +60,8 @@
 	} else 
 	$admin = false;
 
+	if ($_SESSION['droit'] == 3) {
+		$admin = true;
+	}
+
 	$annees = Tournoi::getAnnees();

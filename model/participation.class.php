@@ -9,6 +9,7 @@ class Participation {
 	public $login;
 	public $annee;
 	public $surnom;
+	public $elimine;
 	var $joueur;
 
 	//Constructor is called whenever a new object is created.
@@ -18,6 +19,7 @@ class Participation {
 		$this->login = (isset($data['login'])) ? $data['login'] : "";
 		$this->annee = (isset($data['annee'])) ? $data['annee'] : "";
 		$this->surnom = (isset($data['surnom'])) ? $data['surnom'] : "";
+		$this->elimine = (isset($data['elimine'])) ? $data['elimine'] : "False";
 	}
 
 	public function password(){
@@ -53,12 +55,12 @@ class Participation {
 		if(!$isNewParticipation) {
 			//set the data array
 			//update the row in the database
-			$sql = "UPDATE tparticipations set login = '$this->login', annee='$this->annee', surnom='$this->surnom' WHERE login = '$this->login' AND annee = '$this->annee';";
+			$sql = "UPDATE tparticipations set login = '$this->login', annee='$this->annee', surnom='$this->surnom', elimine='$this->elimine' WHERE login = '$this->login' AND annee = '$this->annee';";
 			// var_dump($sql);
 			$success = $db->exec_sql($sql);
 		} else {
 		//if the user is being registered for the first time.
-			$success = $db->exec_sql("INSERT INTO tparticipations VALUES('$this->login','$this->annee', '$this->surnom');");
+			$success = $db->exec_sql("INSERT INTO tparticipations VALUES('$this->login','$this->annee', '$this->surnom', '$this->elimine');");
 		}
 		if ($success) {
 			$db->exec_sql("COMMIT;");

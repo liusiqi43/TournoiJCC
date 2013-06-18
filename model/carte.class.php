@@ -5,14 +5,14 @@ require_once 'db.class.php';
 class Carte {
 
 	public $nom;
-	public $extentionsts;
+	public $extensionsts;
 	public $dateinterdite;
 
 	//Constructor is called whenever a new object is created.
 	//Takes an associative array with the DB row as an argument.
 	function __construct($data) {
 		$this->nom = (isset($data['nom'])) ? $data['nom'] : "";
-		$this->extentionsts = (isset($data['extentionsts'])) ? $data['extentionsts'] : "";
+		$this->extensionsts = (isset($data['extensionsts'])) ? $data['extensionsts'] : "";
 		$this->dateinterdite = (isset($data['dateinterdite'])) ? $data['dateinterdite'] : "";
 	}
 
@@ -26,16 +26,20 @@ class Carte {
 			//set the data array
 			$data = array(
 				"nom" => "'$this->nom'",
-				"extentionsts" => "'$this->extentionsts'",
+				"extensionsts" => "'$this->extensionsts'",
 				"dateinterdite" => "'$this->dateinterdite'"
 			);
 			
 			//update the row in the database
-			$db->exec_sql('UPDATE tcartes set extentionsts='.$this->extentionsts.', dateinterdite='.$this->dateinterdite.' where nom ='.$this->nom.';');
+			$db->exec_sql("UPDATE tcartes SET extensionsts='$this->extensionsts' where nom ='$this->nom';");
 		}
 		else {
 		//if the user is being registered for the first time.
-			$db->exec_sql('INSERT INTO tcartes VALUES('.$this->nom.','.$this->extentionsts.', '.$this->dateinterdite.');');
+			if($this->dateinterdite!=""){
+				$db->exec_sql("INSERT INTO tcartes VALUES('$this->nom','$this->extensionsts',$this->dateinterdite);");
+			}else{
+				$db->exec_sql("INSERT INTO tcartes VALUES('$this->nom','$this->extensionsts');");
+			}
 		}
 		return true;
 	}

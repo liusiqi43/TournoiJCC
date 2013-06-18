@@ -22,6 +22,8 @@ if(isset($_SESSION['logged_in'])) {
 		$result = $loginTools->getOrganisateur($member->login);
 	} else if ($_SESSION['droit'] == 1) {
 		$result = $loginTools->getJoueur($member->login);
+	} else if ($_SESSION['droit'] == 3) {
+		$result = $loginTools->getOrganisateur($member->login);
 	}
 	if ($result) {
 		$_SESSION['member'] = serialize($result);

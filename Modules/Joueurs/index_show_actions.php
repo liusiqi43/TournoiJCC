@@ -32,15 +32,39 @@
 		}
 	}
 
-	if (isset($_GET["new"])) {
-		$action = "new";
-		$newOrg = array('annee'=>$annee);
-		$participation_to_modify = new Participation($newOrg);
 
-		$logins = Member::getAllLoginEligible($annee);
+
+	if (isset($_GET["elimine"])) {
+		$action = "elimine";
+		$l = $_GET["elimine"];
+		if(!$db->exec_sql("UPDATE tparticipations set elimine = true where annee = $annee AND login = '$l'")){
+			$error = "Echec d'eliminer ce Joueur...";
+		}
 	}
 
-	$result = $db->exec_sql("SELECT * FROM tparticipations tp, tmembres tm WHERE tp.login = tm.login AND tp.annee = $annee ORDER BY tm.nom ASC");
+	$result = $db->exec_sql("SELECT * FROM tparticipations tp, tmembres tm WHERE tp.login = tm.login AND tp.annee = $annee AND tp.elimine = FALSE ORDER BY tm.nom ASC");
+
+ 	if (pg_num_rows($result) < 8) {
+ 		if (isset($_GET["new"])) 
+ 		{
+			$action = "new";
+			$newOrg = array('annee'=>$annee);
+			$participation_to_modify = new Participation($newOrg);
+
+			$logins = Member::getAllLoginEligible($annee);
+		}
+		if (isset($_GET["qualifie"])) {
+			$action = "qualifie";
+			$l = $_GET["qualifie"];
+			if(!$db->exec_sql("UPDATE tparticipations set elimine = false where annee = $annee AND login = '$l'")){
+				$error = "Echec de qualifier ce Joueur...";
+			}
+		}
+ 	} else {
+ 		$error = "Le nombre de joueurs non eliminé ne doit pas dépasser 8! Eliminer certains joueurs si vous comptez ajouter des nouveaux joueurs";
+ 	}
+	
+
 
 	if (!pg_num_rows($result)) {
 		$error = "Aucun joueur est enreigistré pour cette année... ";
@@ -51,6 +75,18 @@
 		array_push($participations, $p);
 	}
 
+	$result = $db->exec_sql("SELECT * FROM tparticipations tp, tmembres tm WHERE tp.login = tm.login AND tp.annee = $annee AND tp.elimine = TRUE ORDER BY tm.nom ASC");
+
+	if (!pg_num_rows($result)) {
+		$error_e = "Aucun joueur n'est eliminé pour le moment... ";
+	}
+
+	$participation_elimine = array();
+	while ($row = pg_fetch_assoc($result)) {
+		$p = new Participation($row);
+		array_push($participation_elimine, $p);
+	}
+
 	$user = unserialize($_SESSION['member']);
 	$annees = $user->getAnnees();
 
@@ -58,5 +94,9 @@
 		$admin = true;
 	} else 
 	$admin = false;
+
+	if ($_SESSION['droit'] == 3) {
+		$admin = true;
+	}
 
 	$annees = Tournoi::getAnnees();

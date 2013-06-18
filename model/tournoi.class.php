@@ -39,10 +39,10 @@ class Tournoi {
 			);
 			
 			//update the row in the database
-			$db->exec_sql('UPDATE ttournois set tDate='.$this->tDate.' where annee ='.$this->annee.';');
+			$db->exec_sql("UPDATE ttournois set tDate='.$this->tDate.' where annee ='.$this->annee.';");
 		} else {
 		//if the user is being registered for the first time.
-			$db->exec_sql('INSERT INTO ttournois VALUES('.$this->annee.','.$this->tDate.');');
+			$db->exec_sql("INSERT INTO ttournois VALUES($this->annee,to_date('Y-mm-dd','$this->tDate');");
 		}
 		return true;
 	}
