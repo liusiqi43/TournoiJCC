@@ -9,7 +9,6 @@ require_once $ROOT.'header.php'; ?>
 <h2>Le tournoi de jeu de cartes à collectionner</h2>
 </p>
 <p>
-<<<<<<< HEAD
 <h3>Les triggers : </h3>
 </p>
 <p><script src="https://gist.github.com/Puck7/f851a885e769ab462d1c.js"></script></p>
