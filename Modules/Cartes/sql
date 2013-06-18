@@ -1,0 +1,1 @@
+select ci.extensionsts, td.nom, dateinterdite, potentielattaque, potentieldefense, coutressource from tdecks td, (select tci.nom, tc.extensionsts, tc.dateinterdite, tci.potentielattaque, tci.potentieldefense, tci.coutressource from tcartesinvention tci inner join tcartes tc on tci.nom=tc.nom) as ci where td.login = 'lemairepierre' and td.annee='1999' and td.nom = ci.nom;
