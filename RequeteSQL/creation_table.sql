@@ -1,7 +1,6 @@
-
 DROP TABLE IF EXISTS tOrganisateurs CASCADE;
-/*DROP TABLE IF EXISTS tJoueurs CASCADE;*/
-/*DROP TABLE IF EXISTS tCartes CASCADE;*/
+DROP TABLE IF EXISTS tJoueurs CASCADE;
+DROP TABLE IF EXISTS tCartes CASCADE;
 DROP TABLE IF EXISTS tCartesInvention CASCADE;
 DROP TABLE IF EXISTS tCartesRessource CASCADE;
 DROP TABLE IF EXISTS tCartesEffet CASCADE;
@@ -10,87 +9,52 @@ DROP TABLE IF EXISTS tTournois CASCADE;
 DROP TABLE IF EXISTS tParticipations CASCADE;
 DROP TABLE IF EXISTS tDecks CASCADE;
 DROP TABLE IF EXISTS tMatchs CASCADE;
-/*DROP TABLE IF EXISTS tMembres CASCADE;*/
+DROP TABLE IF EXISTS tMembres CASCADE;
 ﻿
 
--- tMembres(			//Membres
--- #login	string,
--- pwd		string,
--- nom		string,
--- prenom	string,
--- dateDeNaissance	date,
--- adresse	string,
--- admin	boolean
--- )
 
-
-/* Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
 CREATE TABLE tMembres
 (
 	login varchar(25) PRIMARY KEY,
-	admin boolean,
 	pwd varchar(25),
 	nom varchar(25),
 	prenom varchar(25),
 	dateDeNaissance date,
 	adresse varchar(100)
-);*/ 
+);
 
 
-/*
-tJoueurs(			//Joueurs
-#login => tMembres,
-)
-*/
 
-/*CREATE TABLE tJoueurs Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
+CREATE TABLE tJoueurs 
 (
 	login varchar(25),
 	PRIMARY KEY(login),
 	FOREIGN KEY(login) REFERENCES tMembres(login)
-);*/
+);
 
 
-/*
-tCartes(				//Cartes 
-#nom			string,
-extentionStS	string,
-dateInterdite	date
-)
-*/
 
-/*CREATE TABLE tCartes(  Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
+
+CREATE TABLE tCartes(  
 	nom varchar(25),
 	extensionStS varchar(25),
 	dateInterdite date,
 	PRIMARY KEY(nom)
-);*/
+);
 
 
-/*
-tCartesInvention(		//Inventions
-#nom => tCartes
-potentielAttaque	integer NOT NULL,
-potentielDefense	integer NOT NULL,
-coutRessource		integer NOT NULL,
-)
-*/
 
-/*CREATE TABLE tCartesInvention           Celle là, il faut la créer à la main, je sais pas pourquoi. Si on copie colle l'instruction dans le terminal, ça marche, mais si on appel le fichier, ça marche pas.
+
+CREATE TABLE tCartesInvention          
 (
 	nom varchar(25),
 	potentielAttaque int NOT NULL,
 	potentielDefense int NOT NULL,
 	coutRessource int NOT NULL,
 	PRIMARY KEY(nom)
-);*/
+);
 
-/*
-tCartesRessource(		//Ressources
-#nom => tCartes,
-nbPoints	integer NOT NULL,
-)
-*/
+
 
 CREATE TABLE tCartesRessource
 (
@@ -100,12 +64,7 @@ CREATE TABLE tCartesRessource
 	FOREIGN KEY(nom) REFERENCES tCartes(nom)
 );
 
-/*
-tCartesEffet(			//Effets
-#nom => tCartes,
-coutRessource	integer NOT NULL,
-)
-*/
+
 
 CREATE TABLE tCartesEffet
 (
@@ -115,11 +74,7 @@ CREATE TABLE tCartesEffet
 	FOREIGN KEY(nom) REFERENCES tCartes(nom)
 );
 
-/* tFacultes(				//Facultés
-#nom => tCartes,
-description		string NOT NULL,
-)
-*/
+
 
 CREATE TABLE tFacultes
 (
@@ -128,12 +83,7 @@ CREATE TABLE tFacultes
 	FOREIGN KEY(nom) REFERENCES tCartes(nom)
 );
 
-/*
-tTournois(							//Tournois
-#annee	integer,
-date date(mm-jj),
-)
-*/
+
 
 
 CREATE TABLE tTournois
@@ -146,14 +96,7 @@ CREATE TABLE tTournois
 -- TODO trigger sur l'insertion pour vérifier la cohérence entre année date
 
 
-/*
-tOrganisateurs(		//Organisateurs
-#login => tMembres,
-#annee => Tournoi
-telephone	string
-)
---- PROJ (Organisateur,login) IN PROJ(Membre,login)
-*/
+3
 
 CREATE TABLE tOrganisateurs 
 (
@@ -166,44 +109,32 @@ CREATE TABLE tOrganisateurs
 	
 );
 
-/*
-tMatchs(							//Matchs
-#anne_tournoi => tTournois.annee,
-#horaire		heure,
-#jour 			date,
-#numeroTable	integer,
-#numeroSalle	integer,
-victoire		integer{1 ou 2},
-j1 => tJoueurs.login,
-j2 => tJoueurs.login
-)
-*/
 
+CREATE SEQUENCE key_column_seq;
 CREATE TABLE tMatchs
 (
-	annee_tournoi int,
-	horaire time, /* normalement time existe */
-	jour date,
-	numeroTable int,
-	numeroSalle int,
-	victoire int CHECK (victoire IN (1,2)), /* c'est pas plus simple de faire un bool ici ? Vrai si le joueur 1 gagne, faux sinon. Je dit ça parce que je connais pas de type correspondant à ce qu'on veut donc j'imagine que vous voulez mettre une contraite ce qui est un peu dommage si on peut faire plus simple non ?*/
+	key_column bigint not null autoincrement,
+	annee_tournoi int UNIQUE NOT NULL,
+	horaire time UNIQUE NOT NULL, 
+	jour date UNIQUE NOT NULL,
+	numeroTable UNIQUE int NOT NULL,
+	numeroSalle UNIQUE int NOT NULL,
+	victoire int CHECK (victoire IN (1,2,0)), 
 	j1 varchar(25),
 	j2 varchar(25),
-	PRIMARY KEY(annee_tournoi, horaire, jour, numeroSalle, numeroTable),
+	key_column bigint  /cle artificielle simplifiant l'implémentation
+	PRIMARY KEY(key_column),
 	FOREIGN KEY(annee_tournoi) REFERENCES tTournois(annee),
 	FOREIGN KEY(j1) REFERENCES tJoueurs(login),
-	FOREIGN KEY(j2) REFERENCES tJoueurs(login)
+	FOREIGN KEY(j2) REFERENCES tJoueurs(login),
+	CHECK (date_part('year'::text, jour) = annee_tournoi::double precision),
+	CHECK (j1::text <> j2::text),
+	CHECK (victoire = ANY (ARRAY[0,1,2])),
+	
+	
 );
 
-/*
-tParticipations(					//Participations
-#login => tJoueurs,
-#annee => tTournois,
-surnom UNIQUE NOT NULL,
-nomDeck => tDecks
-)
---- nomDeck UNIQUE NOT NULL,
-*/
+
 
 CREATE TABLE tParticipations
 (
@@ -216,14 +147,7 @@ CREATE TABLE tParticipations
 	FOREIGN KEY(annee) REFERENCES tTournois(annee)
 );
 
-/*
-tDecks(								//Decks
-#login => tParticipations,
-#annee => tParticipations,
-#nom => tCartes
-)
---- CHECK ( COUNT(nom) <= 30 ) GROUP BY nomDeck
-*/
+
 
 CREATE TABLE tDecks
 (
